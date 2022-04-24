@@ -7,10 +7,11 @@ export default class State extends React.Component {
     option: "insert",
     stateName: "",
     stateAb: "",
+    customerList: [],
     stateList: [],
   };
   handleChange = (event) => {
-    if (event.target.name === "dropdown")
+    if (event.target.name === "dropdown-operation")
       this.setState({
         option: event.target.value,
       });
@@ -21,52 +22,71 @@ export default class State extends React.Component {
     }
   };
   addState = () => {
+    const name = this.state.stateName;
     Axios.post("http://localhost:5000/create", {
-      stateName: this.state.stateName,
+      stateName: name,
       stateAb: this.state.stateAb,
     }).then(() => {
       console.log("success");
     });
-    this.setState({ stateName: "", stateAb: "", stateList: [] });
+    this.setState({
+      stateName: "",
+      stateAb: "",
+      stateList: [...this.state.stateList, name],
+    });
   };
   getStates = () => {
     Axios.get("http://localhost:5000/states").then((response) => {
       this.setState({
-        stateName: this.stateName,
-        stateAb: this.stateAb,
-        stateList: response.data,
+        stateList: response.data.map((val) => {
+          return val.stateName;
+        }),
       });
     });
   };
-  displayInfo = () => {
-    console.log(this.state.stateName + this.state.stateAb);
-  };
   render() {
-    const { option } = this.state;
+    const { option, stateList } = this.state;
+
+    this.getStates();
     return (
-      <div className="information">
-        <select
-          className="dropdown"
-          name="dropdown"
-          value={option}
-          onChange={this.handleChange}
-        >
-          <option value="insert">insert</option>
-          <option value="update">update</option>
-          <option value="delete">delete</option>
-        </select>
-        {option === "insert" && (
-          <InsertState
-            stateName={this.state.stateName}
-            stateAb={this.state.stateAb}
-            handleChange={this.handleChange}
-            addState={this.addState}
-          />
-        )}
-        <button onClick={this.getStates}>Get states</button>
-        {this.state.stateList.map((val) => {
-          return <div>{val.stateName}</div>;
-        })}
+      <div>
+        <div className="customer">
+          <label style={{ paddingRight: "10px", paddingLeft: "10px" }}>
+            Customer information by state:
+          </label>
+          <select
+            className="dropdown"
+            name="dropdown-customer"
+            value={option}
+            onChange={this.handleChange}
+          >
+            {stateList.map((val) => {
+              return <option value={val}>{val}</option>;
+            })}
+          </select>
+        </div>
+        <div className="information">
+          <div>
+            <select
+              className="dropdown"
+              name="dropdown-operation"
+              value={option}
+              onChange={this.handleChange}
+            >
+              <option value="insert">insert</option>
+              <option value="update">update</option>
+              <option value="delete">delete</option>
+            </select>
+          </div>
+          {option === "insert" && (
+            <InsertState
+              stateName={this.state.stateName}
+              stateAb={this.state.stateAb}
+              handleChange={this.handleChange}
+              addState={this.addState}
+            />
+          )}
+        </div>
       </div>
     );
   }

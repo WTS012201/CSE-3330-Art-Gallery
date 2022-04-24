@@ -12,11 +12,26 @@
   flex-direction: column;
   justify-content: right;
   align-items: flex-start;
+  border-radius: 10px;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
 }
 .information input {
   font-size: 20px;
   padding-left: 10px;
   margin-top: 5px;
+}
+.customer {
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  border-radius: 10px;
+  background-color: rgb(223, 223, 223);
+  min-height: 50px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  padding-right: 10px;
 }
 .state-info {
   margin-right: 10px;
@@ -41,6 +56,14 @@
   padding-left: 10px;
 }
 
+.scrollable-menu {
+  min-height: 190px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: absolute;
+  width: 300px;
+  display: contents;
+}
 .dropdown {
   font-size: 20px;
 }

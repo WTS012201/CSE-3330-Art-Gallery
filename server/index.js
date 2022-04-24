@@ -7,9 +7,9 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-  user: "username",
+  user: "root",
   host: "localhost",
-  password: "password",
+  password: "",
   database: "art_gallery_database",
 });
 
@@ -28,7 +28,7 @@ app.post("/create", (req, res) => {
   const stateAb = req.body.stateAb;
   db.query(
     "INSERT INTO state VALUES (?,?)",
-    [stateName, stateAb],
+    [stateAb, stateName],
     (err, result) => {
       if (err) {
         console.log(err);
