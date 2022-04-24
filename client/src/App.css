@@ -1,0 +1,22 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.information {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.information input {
+  font-size: 20px;
+  padding-left: 10px;
+  margin-top: 5px;
+}
+.information button {
+  margin-top: 15px;
+}
+.information button:hover {
+  cursor: pointer;
+}
