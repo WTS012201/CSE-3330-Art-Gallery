@@ -2,21 +2,45 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 .information {
   display: flex;
+  min-width: 900px;
+  padding: 10px;
+  background-color: rgb(223, 223, 223);
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: right;
+  align-items: flex-start;
 }
 .information input {
   font-size: 20px;
   padding-left: 10px;
   margin-top: 5px;
 }
+.state-info {
+  margin-right: 10px;
+  font-size: 20px;
+}
 .information button {
   margin-top: 15px;
 }
 .information button:hover {
   cursor: pointer;
+}
+.tabs {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.tabs button {
+  margin: 10px 10px 10px 10px;
+  width: 300px;
+  font-size: 20px;
+  padding-left: 10px;
+}
+
+.dropdown {
+  font-size: 20px;
 }

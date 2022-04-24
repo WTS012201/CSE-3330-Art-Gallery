@@ -1,4 +1,5 @@
-export default class StateForm extends React.Component {
+import React from "react";
+export default class Artwork extends React.Component {
   state = {
     customerList: [],
   };
