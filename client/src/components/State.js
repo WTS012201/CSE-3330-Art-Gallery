@@ -4,7 +4,8 @@ import "../App.css";
 import InsertState from "./InsertState";
 export default class State extends React.Component {
   state = {
-    option: "insert",
+    option1: "none",
+    option2: "none",
     stateName: "",
     stateAb: "",
     customerList: [],
@@ -13,9 +14,12 @@ export default class State extends React.Component {
   handleChange = (event) => {
     if (event.target.name === "dropdown-operation")
       this.setState({
-        option: event.target.value,
+        option1: event.target.value,
       });
     else if (event.target.name === "dropdown-customer") {
+      this.setState({
+        option2: event.target.value,
+      });
       this.getCustomers(event.target.value);
     } else {
       this.setState({
@@ -57,7 +61,7 @@ export default class State extends React.Component {
     );
   };
   render() {
-    const { option, stateList, customerList } = this.state;
+    const { option1, option2, stateList, customerList } = this.state;
 
     this.getStates();
     return (
@@ -69,15 +73,16 @@ export default class State extends React.Component {
           <select
             className="dropdown"
             name="dropdown-customer"
-            value={option}
+            value={option2}
             onChange={this.handleChange}
           >
+            <option value="none">None</option>
             {stateList.map((val) => {
               return <option value={val}>{val}</option>;
             })}
           </select>
           <div style={{ marginTop: "10px" }}>
-            {customerList.length != 0 && (
+            {customerList.length !== 0 && (
               <div className="customer-box">
                 <label id="item1">cID</label>
                 <label id="item2">name</label>
@@ -118,15 +123,16 @@ export default class State extends React.Component {
             <select
               className="dropdown"
               name="dropdown-operation"
-              value={option}
+              value={option1}
               onChange={this.handleChange}
             >
+              <option value="none">None</option>
               <option value="insert">insert</option>
               <option value="update">update</option>
               <option value="delete">delete</option>
             </select>
           </div>
-          {option === "insert" && (
+          {option1 === "insert" && (
             <InsertState
               stateName={this.state.stateName}
               stateAb={this.state.stateAb}

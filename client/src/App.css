@@ -24,9 +24,9 @@
 }
 .customer-box {
   display: grid;
+  padding: 5px;
   grid-template-columns: auto;
-  /* display: flex;
-  justify-content: space-evenly; */
+  background-color: white;
   border-bottom: black;
   border-style: solid;
   border-width: 1px;
