@@ -12,7 +12,18 @@ const db = mysql.createConnection({
   password: "",
   database: "art_gallery_database",
 });
-
+app.post("/customers", (req, res) => {
+  const stateName = req.body.stateName;
+  let query = "SELECT customer.* FROM customer JOIN state";
+  query += " ON customer.stateAb = state.stateAb WHERE state.stateName = (?)";
+  db.query(query, [stateName], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
 app.get("/states", (req, res) => {
   db.query("SELECT stateName FROM state", (err, result) => {
     if (err) {
