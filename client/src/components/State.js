@@ -6,6 +6,7 @@ export default class State extends React.Component {
   state = {
     option1: "none",
     option2: "none",
+    option3: "none",
     stateName: "",
     stateAb: "",
     customerList: [],
@@ -14,6 +15,14 @@ export default class State extends React.Component {
   handleChange = (event) => {
     if (event.target.name === "dropdown-operation")
       this.setState({
+        stateName:
+          event.target.value === "insert"
+            ? ""
+            : this.state.stateList[0].stateName,
+        stateAb:
+          event.target.value === "insert"
+            ? ""
+            : this.state.stateList[0].stateAb,
         option1: event.target.value,
       });
     else if (event.target.name === "dropdown-customer") {
@@ -23,7 +32,11 @@ export default class State extends React.Component {
       this.getCustomers(event.target.value);
     } else if (event.target.name === "dropdown-state") {
       this.setState({
-        option2: event.target.value,
+        option3: event.target.value,
+        stateName: event.target.value,
+        stateAb: this.state.stateList.find((val) => {
+          return val.stateName === event.target.value;
+        }).stateAb,
       });
     } else {
       this.setState({
@@ -32,45 +45,32 @@ export default class State extends React.Component {
     }
   };
   updateState = () => {
-    const { option2, stateName, stateAb, stateList } = this.state;
+    const { option3, stateName, stateAb, stateList } = this.state;
     Axios.post("http://localhost:5000/update", {
       stateName: stateName,
       stateAb: stateAb,
-      option: option2,
+      option: option3,
     }).then(() => {
       console.log("success");
-    });
-    this.setState({
-      stateName: "",
-      stateAb: "",
-      stateList: [
-        ...stateList.reduce((val) => {
-          return val === option2;
-        }),
-        stateName,
-      ],
     });
   };
   addState = () => {
-    const name = this.state.stateName;
+    const { stateName, stateAb } = this.state;
     Axios.post("http://localhost:5000/create", {
-      stateName: name,
-      stateAb: this.state.stateAb,
+      stateName: stateName,
+      stateAb: stateAb,
     }).then(() => {
       console.log("success");
     });
     this.setState({
       stateName: "",
       stateAb: "",
-      stateList: [...this.state.stateList, name],
     });
   };
   getStates = () => {
     Axios.get("http://localhost:5000/states").then((response) => {
       this.setState({
-        stateList: response.data.map((val) => {
-          return val.stateName;
-        }),
+        stateList: response.data,
       });
     });
   };
@@ -85,7 +85,7 @@ export default class State extends React.Component {
     );
   };
   render() {
-    const { option1, option2, stateList, customerList } = this.state;
+    const { option1, option2, option3, stateList, customerList } = this.state;
 
     this.getStates();
     return (
@@ -102,7 +102,7 @@ export default class State extends React.Component {
           >
             <option value="none">None</option>
             {stateList.map((val) => {
-              return <option value={val}>{val}</option>;
+              return <option value={val.stateName}>{val.stateName}</option>;
             })}
           </select>
           <div style={{ marginTop: "10px" }}>
@@ -177,7 +177,7 @@ export default class State extends React.Component {
             <UpdateState
               stateName={this.state.stateName}
               stateAb={this.state.stateAb}
-              option2={option2}
+              option3={option3}
               stateList={stateList}
               handleChange={this.handleChange}
               updateState={this.updateState}

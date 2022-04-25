@@ -38,7 +38,7 @@ app.post("/update", (req, res) => {
   });
 });
 app.get("/states", (req, res) => {
-  db.query("SELECT stateName FROM state", (err, result) => {
+  db.query("SELECT * FROM state", (err, result) => {
     if (err) {
       console.log(err);
     } else {

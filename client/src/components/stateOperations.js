@@ -29,12 +29,11 @@ let UpdateState = (props) => (
     <select
       className="dropdown"
       name="dropdown-state"
-      value={props.option2}
+      value={props.option3}
       onChange={props.handleChange}
     >
-      <option value="none">None</option>
       {props.stateList.map((val) => {
-        return <option value={val}>{val}</option>;
+        return <option value={val.stateName}>{val.stateName}</option>;
       })}
     </select>
     <label>New State Name: </label>
