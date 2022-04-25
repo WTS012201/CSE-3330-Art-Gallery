@@ -24,6 +24,19 @@ app.post("/customers", (req, res) => {
     }
   });
 });
+app.post("/update", (req, res) => {
+  const { stateName, stateAb, option } = req.body;
+  let query = "UPDATE state ";
+  query += "SET stateName = (?), stateAb = (?) ";
+  query += "WHERE stateName = (?)";
+  db.query(query, [stateName, stateAb, option], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send("Values updated");
+    }
+  });
+});
 app.get("/states", (req, res) => {
   db.query("SELECT stateName FROM state", (err, result) => {
     if (err) {

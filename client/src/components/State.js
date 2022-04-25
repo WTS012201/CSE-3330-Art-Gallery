@@ -1,7 +1,7 @@
 import React from "react";
 import Axios from "axios";
 import "../App.css";
-import InsertState from "./InsertState";
+import { InsertState, UpdateState, DeleteState } from "./stateOperations";
 export default class State extends React.Component {
   state = {
     option1: "none",
@@ -21,11 +21,35 @@ export default class State extends React.Component {
         option2: event.target.value,
       });
       this.getCustomers(event.target.value);
+    } else if (event.target.name === "dropdown-state") {
+      this.setState({
+        option2: event.target.value,
+      });
     } else {
       this.setState({
         [event.target.name]: event.target.value,
       });
     }
+  };
+  updateState = () => {
+    const { option2, stateName, stateAb, stateList } = this.state;
+    Axios.post("http://localhost:5000/update", {
+      stateName: stateName,
+      stateAb: stateAb,
+      option: option2,
+    }).then(() => {
+      console.log("success");
+    });
+    this.setState({
+      stateName: "",
+      stateAb: "",
+      stateList: [
+        ...stateList.reduce((val) => {
+          return val === option2;
+        }),
+        stateName,
+      ],
+    });
   };
   addState = () => {
     const name = this.state.stateName;
@@ -120,6 +144,15 @@ export default class State extends React.Component {
         </div>
         <div className="information">
           <div>
+            <label
+              style={{
+                paddingRight: "10px",
+                paddingLeft: "10px",
+                fontSize: "20px",
+              }}
+            >
+              State operation:
+            </label>
             <select
               className="dropdown"
               name="dropdown-operation"
@@ -138,6 +171,24 @@ export default class State extends React.Component {
               stateAb={this.state.stateAb}
               handleChange={this.handleChange}
               addState={this.addState}
+            />
+          )}
+          {option1 === "update" && (
+            <UpdateState
+              stateName={this.state.stateName}
+              stateAb={this.state.stateAb}
+              option2={option2}
+              stateList={stateList}
+              handleChange={this.handleChange}
+              updateState={this.updateState}
+            />
+          )}
+          {option1 === "delete" && (
+            <DeleteState
+              stateName={this.state.stateName}
+              stateAb={this.state.stateAb}
+              handleChange={this.handleChange}
+              stateList={stateList}
             />
           )}
         </div>
