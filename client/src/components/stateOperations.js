@@ -1,8 +1,8 @@
 import React from "react";
 import "../App.css";
 let InsertState = (props) => (
-  <div>
-    <label>State Name: </label>
+  <div className="information">
+    <label style={{ marginTop: "10px" }}>State Name: </label>
     <input
       className="state-info"
       type="text"
@@ -10,7 +10,7 @@ let InsertState = (props) => (
       name="stateName"
       onChange={props.handleChange}
     />
-    <label>State Abbreviation: </label>
+    <label style={{ marginTop: "10px" }}>State Abbreviation: </label>
     <input
       className="state-info"
       type="text"
@@ -24,8 +24,8 @@ let InsertState = (props) => (
   </div>
 );
 let UpdateState = (props) => (
-  <div>
-    <label>Select State: </label>
+  <div className="information">
+    <label style={{ marginTop: "10px" }}>Select State: </label>
     <select
       className="dropdown"
       name="dropdown-state"
@@ -33,13 +33,13 @@ let UpdateState = (props) => (
       onChange={props.handleChange}
     >
       <option hidden selected>
-        ------
+        State
       </option>
       {props.stateList.map((val) => {
         return <option value={val.stateName}>{val.stateName}</option>;
       })}
     </select>
-    <label>New State Name: </label>
+    <label style={{ marginTop: "10px" }}>New State Name: </label>
     <input
       className="state-info"
       type="text"
@@ -47,7 +47,7 @@ let UpdateState = (props) => (
       name="stateName"
       onChange={props.handleChange}
     />
-    <label>New State Abbreviation: </label>
+    <label style={{ marginTop: "10px" }}>New State Abbreviation: </label>
     <input
       className="state-info"
       type="text"
@@ -61,8 +61,8 @@ let UpdateState = (props) => (
   </div>
 );
 let DeleteState = (props) => (
-  <div style={{ padding: "20px" }}>
-    <label>Select State: </label>
+  <div className="information">
+    <label style={{ marginTop: "10px" }}>Select State: </label>
     <select
       className="dropdown"
       name="dropdown-state-delete"
@@ -72,7 +72,7 @@ let DeleteState = (props) => (
       }}
     >
       <option hidden selected>
-        ------
+        State
       </option>
       {props.stateList.map((val) => {
         return <option value={val.stateName}>{val.stateName}</option>;

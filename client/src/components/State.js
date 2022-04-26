@@ -4,9 +4,9 @@ import "../App.css";
 import { InsertState, UpdateState, DeleteState } from "./stateOperations";
 export default class State extends React.Component {
   state = {
-    option1: "------",
-    option2: "------",
-    option3: "------",
+    option1: "Operation",
+    option2: "State",
+    option3: "State",
     stateName: "",
     stateAb: "",
     customerList: [],
@@ -32,8 +32,6 @@ export default class State extends React.Component {
           return val.stateName === event.target.value;
         }).stateAb,
       });
-      if (this.state.option2 === event.target.value)
-        this.getCustomers(event.target.value);
     } else if (event.target.name === "dropdown-state-delete") {
       this.deleteState(event.target.value);
     } else {
@@ -44,29 +42,34 @@ export default class State extends React.Component {
   };
   updateState = () => {
     const { option3, stateName, stateAb } = this.state;
-    console.log(stateAb + stateName + option3);
     Axios.post("http://localhost:5000/update", {
       stateName: stateName,
       stateAb: stateAb,
       option: option3,
-    }).then(() => {
-      console.log("success");
-    });
-    this.getCustomers(stateName);
-    this.setState({
-      stateName: "",
-      stateAb: "",
-      option3: "",
-    });
+    })
+      .then(this.getStates)
+      .then(() => {
+        if (this.state.option2 === option3) {
+          this.getCustomers(stateName);
+        }
+        this.setState({
+          stateName: "",
+          stateAb: "",
+          option3: "",
+        });
+      });
   };
   addState = () => {
     const { stateName, stateAb } = this.state;
     Axios.post("http://localhost:5000/create", {
       stateName: stateName,
       stateAb: stateAb,
-    }).then(() => {
-      console.log("success");
-    });
+    })
+      .then(this.getStates)
+      .then(() => {
+        console.log("success");
+      });
+    this.getStates();
     this.setState({
       stateName: "",
       stateAb: "",
@@ -75,13 +78,18 @@ export default class State extends React.Component {
   deleteState = (stateName) => {
     Axios.post("http://localhost:5000/delete", {
       stateName: stateName,
-    }).then((response) => {});
+    })
+      .then(this.getStates)
+      .then(() => {
+        console.log("success");
+      });
+    this.getStates();
     this.setState({
       option3: "",
     });
   };
   getStates = () => {
-    Axios.get("http://localhost:5000/states").then((response) => {
+    return Axios.get("http://localhost:5000/states").then((response) => {
       this.setState({
         stateList: response.data,
       });
@@ -91,6 +99,7 @@ export default class State extends React.Component {
     const name = stateName;
     Axios.post("http://localhost:5000/customers", { stateName: name }).then(
       (response) => {
+        console.log(response.data);
         this.setState({
           customerList: response.data,
         });
@@ -99,8 +108,7 @@ export default class State extends React.Component {
   };
   render() {
     const { option1, option2, option3, stateList, customerList } = this.state;
-
-    this.getStates();
+    if (!stateList.length) this.getStates();
     return (
       <div>
         <div className="customer-container">
@@ -114,13 +122,13 @@ export default class State extends React.Component {
             onChange={this.handleChange}
           >
             <option hidden selected>
-              ------
+              State
             </option>
             {stateList.map((val) => {
               return <option value={val.stateName}>{val.stateName}</option>;
             })}
           </select>
-          <div style={{ marginTop: "10px" }}>
+          <div style={{ marginTop: "10px", padding: "10px" }}>
             {customerList.length !== 0 && (
               <div className="customer-box">
                 <label id="item1">cID</label>
@@ -158,7 +166,7 @@ export default class State extends React.Component {
           </div>
         </div>
         <div className="information">
-          <div>
+          <div style={{ paddingBottom: "10px" }}>
             <label
               style={{
                 paddingRight: "10px",
@@ -174,6 +182,9 @@ export default class State extends React.Component {
               value={option1}
               onChange={this.handleChange}
             >
+              <option hidden selected>
+                Operation
+              </option>
               <option value="insert">insert</option>
               <option value="update">update</option>
               <option value="delete">delete</option>

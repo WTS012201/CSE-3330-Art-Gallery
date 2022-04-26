@@ -104,4 +104,5 @@
 }
 .dropdown {
   font-size: 20px;
+  min-width: 200px;
 }
