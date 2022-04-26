@@ -63,6 +63,21 @@ app.post("/create", (req, res) => {
   );
 });
 
+app.post("/delete", (req, res) => {
+  const stateName = req.body.stateName;
+  db.query(
+    "DELETE FROM state WHERE stateName = (?)",
+    [stateName],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send("Record Deleted");
+      }
+    }
+  );
+});
+
 app.listen(5000, () => {
   console.log("server running");
 });

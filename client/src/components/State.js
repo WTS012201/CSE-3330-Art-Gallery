@@ -38,6 +38,8 @@ export default class State extends React.Component {
           return val.stateName === event.target.value;
         }).stateAb,
       });
+    } else if (event.target.name === "dropdown-state-delete") {
+      this.deleteState(event.target.value);
     } else {
       this.setState({
         [event.target.name]: event.target.value,
@@ -45,7 +47,7 @@ export default class State extends React.Component {
     }
   };
   updateState = () => {
-    const { option3, stateName, stateAb, stateList } = this.state;
+    const { option3, stateName, stateAb } = this.state;
     Axios.post("http://localhost:5000/update", {
       stateName: stateName,
       stateAb: stateAb,
@@ -66,6 +68,11 @@ export default class State extends React.Component {
       stateName: "",
       stateAb: "",
     });
+  };
+  deleteState = (stateName) => {
+    Axios.post("http://localhost:5000/delete", {
+      stateName: stateName,
+    }).then((response) => {});
   };
   getStates = () => {
     Axios.get("http://localhost:5000/states").then((response) => {
@@ -186,9 +193,10 @@ export default class State extends React.Component {
           {option1 === "delete" && (
             <DeleteState
               stateName={this.state.stateName}
-              stateAb={this.state.stateAb}
-              handleChange={this.handleChange}
+              option3={option3}
               stateList={stateList}
+              handleChange={this.handleChange}
+              deleteState={this.deleteState}
             />
           )}
         </div>
