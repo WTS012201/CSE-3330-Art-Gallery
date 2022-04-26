@@ -4,9 +4,9 @@ import "../App.css";
 import { InsertState, UpdateState, DeleteState } from "./stateOperations";
 export default class State extends React.Component {
   state = {
-    option1: "none",
-    option2: "none",
-    option3: "none",
+    option1: "------",
+    option2: "------",
+    option3: "------",
     stateName: "",
     stateAb: "",
     customerList: [],
@@ -15,14 +15,8 @@ export default class State extends React.Component {
   handleChange = (event) => {
     if (event.target.name === "dropdown-operation")
       this.setState({
-        stateName:
-          event.target.value === "insert"
-            ? ""
-            : this.state.stateList[0].stateName,
-        stateAb:
-          event.target.value === "insert"
-            ? ""
-            : this.state.stateList[0].stateAb,
+        stateName: "",
+        stateAb: "",
         option1: event.target.value,
       });
     else if (event.target.name === "dropdown-customer") {
@@ -38,6 +32,8 @@ export default class State extends React.Component {
           return val.stateName === event.target.value;
         }).stateAb,
       });
+      if (this.state.option2 === event.target.value)
+        this.getCustomers(event.target.value);
     } else if (event.target.name === "dropdown-state-delete") {
       this.deleteState(event.target.value);
     } else {
@@ -48,12 +44,19 @@ export default class State extends React.Component {
   };
   updateState = () => {
     const { option3, stateName, stateAb } = this.state;
+    console.log(stateAb + stateName + option3);
     Axios.post("http://localhost:5000/update", {
       stateName: stateName,
       stateAb: stateAb,
       option: option3,
     }).then(() => {
       console.log("success");
+    });
+    this.getCustomers(stateName);
+    this.setState({
+      stateName: "",
+      stateAb: "",
+      option3: "",
     });
   };
   addState = () => {
@@ -73,6 +76,9 @@ export default class State extends React.Component {
     Axios.post("http://localhost:5000/delete", {
       stateName: stateName,
     }).then((response) => {});
+    this.setState({
+      option3: "",
+    });
   };
   getStates = () => {
     Axios.get("http://localhost:5000/states").then((response) => {
@@ -107,7 +113,9 @@ export default class State extends React.Component {
             value={option2}
             onChange={this.handleChange}
           >
-            <option value="none">None</option>
+            <option hidden selected>
+              ------
+            </option>
             {stateList.map((val) => {
               return <option value={val.stateName}>{val.stateName}</option>;
             })}
@@ -166,7 +174,6 @@ export default class State extends React.Component {
               value={option1}
               onChange={this.handleChange}
             >
-              <option value="none">None</option>
               <option value="insert">insert</option>
               <option value="update">update</option>
               <option value="delete">delete</option>

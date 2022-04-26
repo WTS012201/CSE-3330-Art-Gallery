@@ -32,6 +32,9 @@ let UpdateState = (props) => (
       value={props.option3}
       onChange={props.handleChange}
     >
+      <option hidden selected>
+        ------
+      </option>
       {props.stateList.map((val) => {
         return <option value={val.stateName}>{val.stateName}</option>;
       })}
@@ -58,16 +61,19 @@ let UpdateState = (props) => (
   </div>
 );
 let DeleteState = (props) => (
-  <div>
+  <div style={{ padding: "20px" }}>
     <label>Select State: </label>
     <select
       className="dropdown"
       name="dropdown-state-delete"
-      value={props.stateName}
+      value={props.option3}
       onChange={(event) => {
         props.handleChange(event);
       }}
     >
+      <option hidden selected>
+        ------
+      </option>
       {props.stateList.map((val) => {
         return <option value={val.stateName}>{val.stateName}</option>;
       })}
