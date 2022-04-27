@@ -113,7 +113,7 @@ export default class State extends React.Component {
       <div>
         <div className="customer-container">
           <label style={{ paddingRight: "10px", paddingLeft: "10px" }}>
-            Customer information by state:
+            Customer details by state:
           </label>
           <select
             className="dropdown"
@@ -125,7 +125,11 @@ export default class State extends React.Component {
               State
             </option>
             {stateList.map((val) => {
-              return <option value={val.stateName}>{val.stateName}</option>;
+              return (
+                <option value={val.stateName}>
+                  {val.stateName + " (" + val.stateAb + ")"}
+                </option>
+              );
             })}
           </select>
           <div style={{ marginTop: "10px", padding: "10px" }}>

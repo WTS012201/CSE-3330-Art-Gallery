@@ -36,7 +36,11 @@ let UpdateState = (props) => (
         State
       </option>
       {props.stateList.map((val) => {
-        return <option value={val.stateName}>{val.stateName}</option>;
+        return (
+          <option value={val.stateName}>
+            {val.stateName + " (" + val.stateAb + ")"}
+          </option>
+        );
       })}
     </select>
     <label style={{ marginTop: "10px" }}>New State Name: </label>
@@ -75,7 +79,11 @@ let DeleteState = (props) => (
         State
       </option>
       {props.stateList.map((val) => {
-        return <option value={val.stateName}>{val.stateName}</option>;
+        return (
+          <option value={val.stateName}>
+            {val.stateName + " (" + val.stateAb + ")"}
+          </option>
+        );
       })}
     </select>
   </div>
